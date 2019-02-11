@@ -21,8 +21,8 @@
 
    --------------------------------------------------------
    OLED Display Format:
-   c,n:Rx=-sss,Q=qq
-   T=tttt,V=vvvv
+     c,n:Rx:-sss,Q:qq
+     T=tttt, V=vvvv S
 
    Where:
    c = Rx Channel Number
@@ -31,10 +31,14 @@
    qq = LQI
    tttt = Sensor temperature in tenth degrees F
    vvvv = Sensor battery voltage in mV
+   S = Status symbol in lower right corner of display:
+       Alternates between top, middle, bottom bar every second
+       to indicate that code is running and receiver is on.
 
    --------------------------------------------------------
 
    1.0 - 02/02/2019 - A.T. - Original
+   1.1 - 02/09/2019 - A.T. - Update status symbol to minimize flashing
 
    --------------------------------------------------------
 **/
@@ -120,6 +124,7 @@ struct sPacket
 struct sPacket rxPacket;
 
 int statusFlag = 0;
+char statusChar;
 
 void setup() {
   pinMode(5, INPUT_PULLUP);   // Used to select CHANNEL_3
@@ -153,6 +158,26 @@ void loop() {
   int packetSize, rxRSSI, rxLQI, crcFailed, rxT, rxmV;
 
   packetSize = Radio.receiverOn((unsigned char*)&rxPacket, sizeof(rxPacket), 1000);
+
+  // Alternate special character symbols in lower right of OLED to indicate receiver is active.
+  switch (statusFlag % 4) {
+    case 0:
+      statusChar = 0xFF;    // Top line
+      break;
+    case 1:
+      statusChar = 0xB0;    // Middle line
+      break;
+    case 2:
+      statusChar = 0x5F;    // Bottom line
+      break;
+    case 3:
+      statusChar = 0xB0;    // Middle line
+      break;
+    default:
+      break;
+  }
+  statusFlag++;
+
   if (packetSize > 0) {
     rxRSSI = Radio.getRssi();
     rxLQI = Radio.getLqi();
@@ -175,7 +200,7 @@ void loop() {
           break;
 
         case (ADDRESS_POND):
-          rxT =  rxPacket.ponddata.MSP_T;
+          rxT =  rxPacket.ponddata.Submerged_T;
           rxmV = rxPacket.ponddata.Batt_mV;
           break;
       }
@@ -186,7 +211,7 @@ void loop() {
     if (rxRSSI > 0) rxRSSI = 0;
     if (rxLQI > 99) rxLQI = 99;
     if (rxLQI < 0) rxLQI = 0;
-    snprintf((char *)oled_text[0], OLED_COLS + 1, "%d,%d:Rs=-%3d,Q:%2d", ch, rxPacket.from, -rxRSSI, rxLQI);
+    snprintf((char *)oled_text[0], OLED_COLS + 1, "%d,%d:Rs:-%3d,Q:%2d", ch, rxPacket.from, -rxRSSI, rxLQI);
     if (crcFailed == 1) {
       snprintf((char *)oled_text[1], OLED_COLS + 1, "CRC Failed!     ");
     }
@@ -197,13 +222,15 @@ void loop() {
       if (rxmV < -999) rxmV = -999;
       snprintf((char *)oled_text[1], OLED_COLS + 1, "T:%4d, V:%4d   ", rxT, rxmV);
     }
+
+    oled_text[1][15] = statusChar;
+    oledDisplay();
   }
 
-  // Alternate special character symbols in lower right of OLED to indicate receiver is active. 
-  statusFlag++;
-  if (statusFlag % 2 == 1) oled_text[1][15] = 0x09; // Upper left bracket
-  else oled_text[1][15] = 0x0c;                     // Lower right bracket
-  oledDisplay();
+  else { // Just update the status symbol without flashing all the chars on the display
+    oled.command(row_address[1] + 15);
+    oled.data(statusChar);
+  }
 }
 
 void oledDisplay() {
