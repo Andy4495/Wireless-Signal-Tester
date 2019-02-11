@@ -39,6 +39,7 @@
 
    1.0 - 02/02/2019 - A.T. - Original
    1.1 - 02/09/2019 - A.T. - Update status symbol to minimize flashing
+   1.2 - 02/11/2019 - A.T. - Use write commands from updated NewhavenOLED library
 
    --------------------------------------------------------
 **/
@@ -52,9 +53,8 @@ const byte SCLK_PIN = 13;
 const byte SDIN_PIN = 12;
 const byte row_address[2] = {0x80, 0xC0};   // DDRAM addresses for rows (2-row models)
 NewhavenOLED oled(OLED_ROWS, OLED_COLS, SDIN_PIN, SCLK_PIN, CS_PIN, RES_PIN);
-byte oled_text[OLED_ROWS][OLED_COLS + 1] =
-{ " Signal Tester  ",
-  " Channel_2      "
+char oled_text[OLED_ROWS*OLED_COLS + 1] =
+{ " Signal Tester   Channel_2      "
 };
 
 #include <SPI.h>
@@ -127,22 +127,23 @@ int statusFlag = 0;
 char statusChar;
 
 void setup() {
+  
   pinMode(5, INPUT_PULLUP);   // Used to select CHANNEL_3
   pinMode(6, INPUT_PULLUP);   // Used to select CHANNEL_4
 
   if (digitalRead(5) == LOW) {
     rxChannel = CHANNEL_3;
     ch = 3;
-    oled_text[1][9] = '3';
+    oled_text[25] = '3';
   }
   if (digitalRead(6) == LOW) {
     rxChannel = CHANNEL_4;
     ch = 4;
-    oled_text[1][9] = '4';
+    oled_text[25] = '4';
   }
 
   oled.begin();
-  oledDisplay();        // Print the welcome message
+  oled.write(oled_text);        // Print the welcome message
 
   // Setup CC110L data structure
   rxPacket.from = 0;         // "from" and "struct_type" filled in by received message
@@ -156,6 +157,8 @@ void setup() {
 
 void loop() {
   int packetSize, rxRSSI, rxLQI, crcFailed, rxT, rxmV;
+
+  char temp_text[17];
 
   packetSize = Radio.receiverOn((unsigned char*)&rxPacket, sizeof(rxPacket), 1000);
 
@@ -211,40 +214,24 @@ void loop() {
     if (rxRSSI > 0) rxRSSI = 0;
     if (rxLQI > 99) rxLQI = 99;
     if (rxLQI < 0) rxLQI = 0;
-    snprintf((char *)oled_text[0], OLED_COLS + 1, "%d,%d:Rs:-%3d,Q:%2d", ch, rxPacket.from, -rxRSSI, rxLQI);
+    snprintf(oled_text, OLED_COLS + 1, "%d,%d:Rs:-%3d,Q:%2d", ch, rxPacket.from, -rxRSSI, rxLQI);
     if (crcFailed == 1) {
-      snprintf((char *)oled_text[1], OLED_COLS + 1, "CRC Failed!     ");
+      strncat(oled_text, "CRC Failed!     ", OLED_COLS + 1);
     }
     else { // CRC was valid
       if (rxT > 9999) rxT = 9999;
       if (rxT < -999) rxT = -999;
       if (rxmV > 9999) rxmV = 9999;
       if (rxmV < -999) rxmV = -999;
-      snprintf((char *)oled_text[1], OLED_COLS + 1, "T:%4d, V:%4d   ", rxT, rxmV);
+      snprintf(temp_text, OLED_COLS + 1, "T:%4d, V:%4d   ", rxT, rxmV);
+      strncat(oled_text, temp_text, OLED_COLS + 1);
     }
 
-    oled_text[1][15] = statusChar;
-    oledDisplay();
+    oled_text[31] = statusChar;
+    oled.write(oled_text);
   }
 
   else { // Just update the status symbol without flashing all the chars on the display
-    oled.command(row_address[1] + 15);
-    oled.data(statusChar);
-  }
-}
-
-void oledDisplay() {
-  byte r = 0;
-  byte c = 0;
-
-  oled.command(0x01); // Clear display and cursor home
-  delay(2);           // Need a pause after clearing display
-  for (r = 0; r < OLED_ROWS; r++)        // One row at a time
-  {
-    oled.command(row_address[r]);        //  moves the cursor to the first column of that line
-    for (c = 0; c < OLED_COLS; c++)      //  One character at a time
-    {
-      oled.data(oled_text[r][c]);         //  displays the corresponding string
-    }
+    oled.write(15, 1, statusChar);
   }
 }
