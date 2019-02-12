@@ -1,25 +1,30 @@
 /**
    Sensor Receiver Signal Tester
 
+   https://gitlab.com/Andy4495/wireless-signal-tester
+
    Used to test Sensor transmitters.
    - Displays RSSI, LQI, Temp, Vcc, Channel # on external OLED
    - RX Channel selection:
           CHANNEL_1 - Default channel
-          CHANNEL_3 - Pond sensor (Press S1/Ground Pin 5 during reset)
+          CHANNEL_3 - Pond sensor (Press button or Ground Pin 5 during reset)
           CHANNEL_4 - Weather station (Ground Pin 6 during reset)
-   - Pin Definitions
+   - BoosterPack Pin Definitions
     1: 3V3                      20: GND
     2: GDO2 (CC110L)            19: GDO0 (CC110L)
     3: >>RXD                    18: CS (CC100L)
     4: <<TXD                    17: -
-    5: S1/CHANNEL_3 select      16: -
+    5: CHANNEL_3 select         16: -
     6: CHANNEL_4 select         15: MISO (CC110L)
     7: SCK                      14: MOSI (CC110L)
     8:                          13: SCLK (OLED)
     9: SCL (Fuel Tank II)       12: SDIN (OLED)
    10: SDA (Fuel Tank II)       11: CS (OLED)
 
+   Note that on a G2 LaunchPad, pin 5 (P1.3) has a button tied to it.
+
    --------------------------------------------------------
+
    OLED Display Format:
      c,n:Rx:-sss,Q:qq
      T=tttt, V=vvvv S
@@ -40,6 +45,7 @@
    1.0 - 02/02/2019 - A.T. - Original
    1.1 - 02/09/2019 - A.T. - Update status symbol to minimize flashing
    1.2 - 02/11/2019 - A.T. - Use write commands from updated NewhavenOLED library
+   1.2.1 - 02/12/2019 - A.T. - Add URL, minor updates to comments.
 
    --------------------------------------------------------
 **/
@@ -48,7 +54,7 @@
 const byte OLED_ROWS = 2;                 // Number of display rows
 const byte OLED_COLS = 16;             // Number of display columns
 const byte CS_PIN = 11;
-const byte RES_PIN = NO_PIN;          // Hardwire RESET pin HIGH
+const byte RES_PIN = NO_PIN;          // Hardwire RESET pin pulled HIGH externally
 const byte SCLK_PIN = 13;
 const byte SDIN_PIN = 12;
 const byte row_address[2] = {0x80, 0xC0};   // DDRAM addresses for rows (2-row models)
@@ -72,7 +78,7 @@ char oled_text[OLED_ROWS*OLED_COLS + 1] =
 #define ADDRESS_POND     0x07
 
 
-channel_t rxChannel = CHANNEL_1;        // Can be changed with PUSH2
+channel_t rxChannel = CHANNEL_1;        // Can be changed by grounding pins 5 or 6 (see above)
 int ch = 1;  // Integer representation of channel number
 
 enum {WEATHER_STRUCT, TEMP_STRUCT};
@@ -127,7 +133,7 @@ int statusFlag = 0;
 char statusChar;
 
 void setup() {
-  
+
   pinMode(5, INPUT_PULLUP);   // Used to select CHANNEL_3
   pinMode(6, INPUT_PULLUP);   // Used to select CHANNEL_4
 
