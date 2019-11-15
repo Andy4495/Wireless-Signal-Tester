@@ -1,7 +1,7 @@
 /**
    Sensor Receiver Signal Tester
 
-   https://gitlab.com/Andy4495/wireless-signal-tester
+   https://github.com/Andy4495/wireless-signal-tester
 
    Used to test Sensor transmitters.
    - Displays RSSI, LQI, Temp, Vcc, Channel # on external OLED
