@@ -36,6 +36,6 @@ By default, the Signal Tester listens on CHANNEL_1 (as defined by the AIR430Boos
 [2]: http://www.ti.com/tool/MSP-EXP430G2ET
 [3]: https://www.newhavendisplay.com/specs/NHD-0216CW-AY3.pdf
 [4]: https://github.com/Andy4495/NewhavenOLED
-[5]: https://github.com/Andy4495/MSP430G2-Temp_Sensor
+[5]: https://github.com/Andy4495/MSP430LowPowerTempSensor
 [6]: https://github.com/Andy4495/Outdoor-Weather-Sensor
 [7]: https://github.com/Andy4495/Wireless-Sensor-Receiver-Hub
