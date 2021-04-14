@@ -32,6 +32,9 @@ By default, the Signal Tester listens on CHANNEL_1 (as defined by the AIR430Boos
 * CC110L-based Outdoor [Weather Sensor][6]
 * CC110L-based Sensor [Receiver Hub][7]
 
+## License ##
+The software and other files in this repository are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
+
 [1]: http://www.ti.com/tool/430BOOST-CC110L
 [2]: http://www.ti.com/tool/MSP-EXP430G2ET
 [3]: https://www.newhavendisplay.com/specs/NHD-0216CW-AY3.pdf
@@ -39,3 +42,5 @@ By default, the Signal Tester listens on CHANNEL_1 (as defined by the AIR430Boos
 [5]: https://github.com/Andy4495/MSP430LowPowerTempSensor
 [6]: https://github.com/Andy4495/Outdoor-Weather-Sensor
 [7]: https://github.com/Andy4495/Wireless-Sensor-Receiver-Hub
+[100]: https://choosealicense.com/licenses/mit/
+[101]: ./LICENSE.txt
