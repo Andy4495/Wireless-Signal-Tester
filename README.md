@@ -1,5 +1,8 @@
 # Wireless Sensor Signal Tester
 
+[![Arduino Compile Sketches](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/arduino-compile-sketches.yml/badge.svg)](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/arduino-compile-sketches.yml)
+[![Check Markdown Links](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/CheckMarkdownLinks.yml/badge.svg)](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/CheckMarkdownLinks.yml)
+
 I have several wireless sensors based on TI's CC110L BoosterPack [430BOOST-CC110L][1] placed around my house and yard.
 
 Since I sometimes need to place sensors at the fringe of the reception area, it is useful to have a signal tester with a display showing signal strength and link quality. This tester can also be used as a debugging tool if one of the sensors stops sending data or sends incorrect data.
@@ -38,7 +41,7 @@ By default, the Signal Tester listens on CHANNEL_1 (as defined by the AIR430Boos
 
 The software and other files in this repository are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
 
-[1]: http://www.ti.com/tool/430BOOST-CC110L
+[1]: https://www.ti.com/lit/ml/swru312b/swru312b.pdf
 [2]: http://www.ti.com/tool/MSP-EXP430G2ET
 [3]: https://www.newhavendisplay.com/specs/NHD-0216CW-AY3.pdf
 [4]: https://github.com/Andy4495/NewhavenOLED
