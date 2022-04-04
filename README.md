@@ -43,7 +43,7 @@ The software and other files in this repository are released under what is commo
 
 [1]: https://www.ti.com/lit/ml/swru312b/swru312b.pdf
 [2]: http://www.ti.com/tool/MSP-EXP430G2ET
-[3]: https://www.newhavendisplay.com/specs/NHD-0216CW-AY3.pdf
+[3]: https://newhavendisplay.com/content/specs/NHD-0216CW-AB3.pdf
 [4]: https://github.com/Andy4495/NewhavenOLED
 [5]: https://github.com/Andy4495/MSP430LowPowerTempSensor
 [6]: https://github.com/Andy4495/Outdoor-Weather-Sensor
