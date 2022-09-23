@@ -12,14 +12,14 @@
    - BoosterPack Pin Definitions
     1: 3V3                      20: GND
     2: GDO2 (CC110L)            19: GDO0 (CC110L)
-    3: >>RXD                    18: CS (CC100L)
+    3: >>RXD                    18: CS   (CC100L)
     4: <<TXD                    17: -
     5: CHANNEL_3 select         16: -
     6: CHANNEL_4 select         15: MISO (CC110L)
     7: SCK                      14: MOSI (CC110L)
     8:                          13: SCLK (OLED)
-    9: SCL (Fuel Tank II)       12: SDIN (OLED)
-   10: SDA (Fuel Tank II)       11: CS (OLED)
+    9: SCL (Fuel Tank II)       12: SDI  (OLED)
+   10: SDA (Fuel Tank II)       11: CS   (OLED)
 
    Note that on a G2 LaunchPad, pin 5 (P1.3) has a button tied to it.
 
@@ -56,11 +56,11 @@ const byte OLED_COLS = 16;             // Number of display columns
 const byte CS_PIN = 11;
 const byte RES_PIN = NO_PIN;          // Hardwire RESET pin pulled HIGH externally
 const byte SCLK_PIN = 13;
-const byte SDIN_PIN = 12;
+const byte SDI_PIN  = 12;
 const byte row_address[2] = {0x80, 0xC0};   // DDRAM addresses for rows (2-row models)
-NewhavenOLED oled(OLED_ROWS, OLED_COLS, SDIN_PIN, SCLK_PIN, CS_PIN, RES_PIN);
+NewhavenOLED oled(OLED_ROWS, OLED_COLS, SDI_PIN, SCLK_PIN, CS_PIN, RES_PIN);
 char oled_text[OLED_ROWS*OLED_COLS + 1] =
-{ " Signal Tester   Channel_2      "
+{ " Signal Tester   CHANNEL_1      "
 };
 
 #include <SPI.h>

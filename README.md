@@ -13,16 +13,18 @@ The code should port without changes to other MSP430 LaunchPads. Other displays 
 
 ## Hardware
 
-The sketch currently uses the following pin configuration for the display. These can be changed up updating the associated `#define` in the sketch:
+The sketch currently uses the following pin configuration for the display. These can be changed by updating the associated `const byte` definitions in the sketch:
 
-    CS    - Pin 11  // CS_PIN
-    SDIN  - Pin 12  // SDIN_PIN
-    SCLK  - Pin 13  // SCLK_PIN
-    RESET - Pulled High external from MSP430 (not controlled by sketch)
+| OLED Signal | LaunchPad Pin | `const byte` definition               |
+| ----------- | ------------- | ------------------------------------- |
+|    /CS      | 11            | CS_PIN                                |
+|    SDI      | 12            | SDI_PIN                               |
+|    SCLK     | 13            | SCLK_PIN                              |
+|    /RES     | N/A           | Not connected, pulled high externally |
 
 ## RX Channel
 
-By default, the Signal Tester listens on CHANNEL_1 (as defined by the AIR430BoostUSAFCC library included with Energia). Pull pin 5 low during reset to select CHANNEL_3, or pin 6 to select CHANNEL_4. I currently don't have a sensor transmitting on CHANNEL_2, but the sketch can be easily modified to support CHANNEL_2.
+By default, the Signal Tester listens on CHANNEL_1. Pull pin 5 low during reset to select CHANNEL_3 (this is the PUSH2 button on the G2 LaunchPads), or pin 6 to select CHANNEL_4. I currently don't have a sensor transmitting on CHANNEL_2, but the sketch can be easily modified to support CHANNEL_2.
 
 ## External Libraries
 
