@@ -1,7 +1,7 @@
 # Wireless Sensor Signal Tester
 
 [![Arduino Compile Sketches](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/arduino-compile-sketches.yml/badge.svg)](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/arduino-compile-sketches.yml)
-[![Check Markdown Links](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/CheckMarkdownLinks.yml/badge.svg)](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/CheckMarkdownLinks.yml)
+[![Check Markdown Links](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/check-links.yml/badge.svg)](https://github.com/Andy4495/Wireless-Signal-Tester/actions/workflows/check-links.yml)
 
 I have several wireless sensors based on TI's CC110L BoosterPack [430BOOST-CC110L][1] placed around my house and yard.
 
